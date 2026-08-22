@@ -373,6 +373,15 @@
     box-shadow:none;
   }
   .hero-cta.ghost:hover{border-color:var(--violet); color:var(--violet); transform:translate(-2px,-2px); box-shadow:4px 4px 0 var(--violet-deep);}
+  .hero-cta.share{
+    background:transparent;
+    color:var(--violet);
+    border:1px solid rgba(156,127,214,.5);
+    box-shadow:none;
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .hero-cta.share:hover{background:rgba(156,127,214,.12); border-color:var(--violet); transform:translate(-2px,-2px); box-shadow:4px 4px 0 var(--violet-deep);}
+  .hero-cta.share:active{transform:translate(0,0); box-shadow:none;}
   .hero-art{
     position:relative;
     aspect-ratio: 1/1;
@@ -853,6 +862,7 @@
       <div class="hero-ctas">
         <a class="hero-cta" href="#galeria">Ver galería ↓</a>
         <a class="hero-cta ghost" href="#contacto">Contáctame</a>
+        <button type="button" class="hero-cta share" id="shareBtn">Compartir portafolio ↗</button>
       </div>
     </div>
     <div class="hero-art">
@@ -1307,6 +1317,25 @@
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') toggleMoviePanel(false);
   });
+
+  /* ---------------------------------------------------------
+     5b. COMPARTIR (WhatsApp / mensajería nativa)
+  --------------------------------------------------------- */
+  const SITE_URL = 'https://movieart.github.io/movie-pixel-art-portafolio/';
+  const SHARE_TEXT = 'Mira mi portafolio de ilustración pixel art:';
+  const shareBtn = document.getElementById('shareBtn');
+  if(shareBtn){
+    shareBtn.addEventListener('click', async function(){
+      if(navigator.share){
+        try{
+          await navigator.share({ title:'MOVIE — Pixel Art & Digital Illustration', text:SHARE_TEXT, url:SITE_URL });
+        }catch(e){ /* el visitante cerró el panel de compartir, no hacemos nada */ }
+      }else{
+        const waUrl = 'https://wa.me/?text=' + encodeURIComponent(SHARE_TEXT + ' ' + SITE_URL);
+        window.open(waUrl, '_blank', 'noopener');
+      }
+    });
+  }
 
   /* ---------------------------------------------------------
      6. RESEÑAS
